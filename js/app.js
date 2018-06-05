@@ -1,5 +1,9 @@
 $(document).ready(function () {
 
+  // Disable the right click button's menu.
+  function pressRightClick() { return false; }
+  document.oncontextmenu = pressRightClick;
+
   var mode = 'beginner';
   newGame(mode);
   // $('#new-game').hide();
@@ -38,6 +42,17 @@ $(document).ready(function () {
     $('.cell').click(function (event) {
       board.click(event.target);
     });
+
+    $('.cell').mouseup(function(event) {
+      if (event.which == 3) {
+        var row = $(event.target).attr("data-row");
+        var col = $(event.target).attr("data-col");
+        console.log(">>["+row+","+col+"]");
+        var flagCell = 'div[data-row="' + row + '"][data-col="' + col + '"]';
+        $(flagCell).addClass('flag');
+      }
+    })
+
     // return board;
   }
 
@@ -106,9 +121,9 @@ $(document).ready(function () {
       }
     }
 
-    this.click = function (target_element) {
-      var row = $(target_element).attr("data-row");
-      var col = $(target_element).attr("data-col");
+    this.click = function (event) {
+      var row = $(event).attr("data-row");
+      var col = $(event).attr("data-col");
       if (this.gameOver === true) {
         return;
       }

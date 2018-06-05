@@ -73,9 +73,16 @@ body {
 
 .mine {
     color: #333;
-    background-size: cover;
+    background-size: contain;
     background-color: radial-gradient(#eee, #bebebe);
-    background-image: url(../images/mine.png);
+    background-image: url(../images/mine-white.png);
+}
+
+.flag {
+    color: #333;
+    background-size: contain;
+    background-color: radial-gradient(#69D6FF, #4B99FF);
+    background-image: url(../images/flag-blue-small.png);
 }
 
 .safe {
