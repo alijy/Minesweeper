@@ -58,7 +58,7 @@ body {
   /* position:absolute; */
 }
 
-.space {
+.cell {
   background: radial-gradient(#69D6FF, #4B99FF);
   display: inline-block;
   border: 2px solid none;
@@ -69,4 +69,16 @@ body {
   height: 24px;
   font-size: 22px;
   line-height: 20px;
+}
+
+.mine {
+    color: #333;
+}
+
+.cell .fa { line-height: 20px; }
+.cell .fa-mine { font-size: 20px; }
+.cell .fa-smile-o { font-size: 26px; }
+
+.cell:hover {
+  background: yellow;
 }

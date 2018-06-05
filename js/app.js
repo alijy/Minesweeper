@@ -1,20 +1,5 @@
-// $(function() {
-//
-//   var mode = {
-//     beginner: [9, 9],
-//     intermediate: [16, 16],
-//     expert: [30, 16]
-//   }
-//
-//   var currentBoard = 'beginner';
-//
-//   for (var i = 0; i < mode[currentBoard][0].length; i++) {
-//     console.log(i);
-//   }
-//
-// });
-
 $(document).ready(function () {
+
   var mode = 'beginner';
   newGame(mode);
   // $('#new-game').hide();
@@ -50,7 +35,7 @@ $(document).ready(function () {
     board.render();
     board.gameOver = false;
 
-    $('.space').click(function (event) {
+    $('.cell').click(function (event) {
       board.click(event.target);
     });
     // return board;
@@ -63,9 +48,9 @@ $(document).ready(function () {
     this.spaces = [];
     this.gameOver = false;
     this.spacesCleared = 0;
-    this.bombCount = 0;
+    this.mineCount = 0;
 
-    //Initializing the Object
+    //Initialising the Object
     this.spaces = new Array(this.row);
     for (i = 0; i < this.row; i++) {
         this.spaces[i] = new Array(this.col);
@@ -74,19 +59,16 @@ $(document).ready(function () {
         }
     }
 
-    var min = 1;
-    var max = this.row * this.col;
-    this.bombCount = bombNum();
-    $('#value').html(this.bombCount);
-    for (var i = 0; i < this.bombCount; i++) {
-      var bombIndex = Math.round(Math.random() * (max - 1));
-      var x = Math.floor(bombIndex / this.col);
-      var y = bombIndex % this.col;
-      this.spaces[x][y] = new cell(false, -1);
+    //Initialising the cells
+    this.mineCount = mineNum();
+    $('#value').html(this.mineCount);
+    var mineIndex = mineIndexGenerator(this.mineCount, this.row, this.col);
+    for (var i = 0; i < mineIndex.length; i++) {
+      this.spaces[mineIndex[i][0]][mineIndex[i][1]] = new cell(false, -1);
     }
     // for (var i = 0; i < this.row; i++) {
     //   for (var j = 0; j < this.col; j++) {
-    //       this.spaces[i][j].holds = numBombNear.call(this, i, j);
+    //       this.spaces[i][j].holds = numMineNear.call(this, i, j);
     //   }
     // }
 
@@ -114,7 +96,7 @@ $(document).ready(function () {
       var spaces = "";
       for (var i = 1; i <= row; i++) {
           for (var j = 1; j <= col; j++) {
-              spaces = spaces.concat('<div class="space" data-row="' + i + '" data-col="' + j + '">&nbsp;</div>');
+              spaces = spaces.concat('<div class="cell" data-row="' + i + '" data-col="' + j + '">&nbsp;</div>');
           }
           spaces = spaces.concat('<br>');
       }
@@ -140,8 +122,8 @@ $(document).ready(function () {
         for (j = 0; j < this.col; j++) {
           if (this.spaces[i][j].holds == -1) {
             var dom_target = 'div[data-row="' + (i + 1) + '"][data-col="' + (j + 1) + '"]';
-            $(dom_target).addClass('bomb');
-            $(dom_target).html('<i class="fa fa-bomb"></i>');
+            $(dom_target).addClass('mine');
+            $(dom_target).html('<i class="fa fa-mine"></i>');
           }
         }
       }
@@ -157,8 +139,8 @@ $(document).ready(function () {
     this.holds = holds;
   }
 
-  //Bomb Count Generator
-  function bombNum() {
+  //Mine Count Generator
+  function mineNum() {
     var num = 0;
     switch(mode) {
       case 'beginner':
@@ -174,14 +156,18 @@ $(document).ready(function () {
     return num;
   }
 
-  function randomArray(count, max) {
+  function mineIndexGenerator(count, maxRow, maxCol) {
     var arr = []
+    var myc = 0;
     while(arr.length < count){
-      var randomnumber = Math.floor(Math.random()*100) + 1;
-      if(arr.indexOf(randomnumber) > -1){
+      console.log(myc); myc++;
+      var randomRow = Math.floor(Math.random() * maxRow);
+      var randomCol = Math.floor(Math.random() * maxCol);
+      if (arr.some(coordinate => coordinate[0] == randomRow && coordinate[1] == randomCol)) {
         continue;
       }
-      arr[arr.length] = randomnumber;
+      arr[arr.length] = [randomRow, randomCol];
+      console.log("*["+randomRow+","+randomCol+"]");
     }
     return arr;
   }
