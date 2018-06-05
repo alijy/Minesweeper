@@ -67,22 +67,25 @@ body {
   border-radius: 1px;
   width: 24px;
   height: 24px;
-  font-size: 22px;
+  font-size: 14px;
   line-height: 20px;
 }
 
 .mine {
     color: #333;
+    background-size: cover;
+    background-color: radial-gradient(#eee, #bebebe);
+    background-image: url(../images/mine.png);
 }
 
 .safe {
-    background: #fff;
+    background: radial-gradient(#eee, #bebebe);
     color: #777;
 }
 
 .cell .fa { line-height: 20px; }
-.cell .fa-mine { font-size: 20px; }
-.cell .fa-smile-o { font-size: 26px; }
+.cell .fa-mine { font-size: 14px; }
+.cell .fa-smile-o { font-size: 14px; }
 
 .cell:hover {
   background: yellow;

@@ -151,9 +151,14 @@ $(document).ready(function () {
     }
 
     function uncoverSurroundings(row, col) {
-      checkSpace.call(this, row - 1, col - 1); checkSpace.call(this, row - 1, col); checkSpace.call(this, row - 1, col + 1);
-      checkSpace.call(this, row, col - 1); checkSpace.call(this, row, col + 1);
-      checkSpace.call(this, row + 1, col - 1); checkSpace.call(this, row + 1, col); checkSpace.call(this, row + 1, col + 1);
+      checkSpace.call(this, row - 1, col - 1);
+      checkSpace.call(this, row - 1, col);
+      checkSpace.call(this, row - 1, col + 1);
+      checkSpace.call(this, row, col - 1);
+      checkSpace.call(this, row, col + 1);
+      checkSpace.call(this, row + 1, col - 1);
+      checkSpace.call(this, row + 1, col);
+      checkSpace.call(this, row + 1, col + 1);
       checkAllCellsExplored.call(this);
     }
 
@@ -175,7 +180,6 @@ $(document).ready(function () {
               for (j = 0; j < this.col; j++) {
                   if (this.spaces[i][j].holds == -1) {
                       var bomb_target = 'div[data-row="' + (i + 1) + '"][data-col="' + (j + 1) + '"]';
-                      $(bomb_target).html('<i class="fa fa-smile-o"></i>');
                       this.gameOver = true;
                       // $('#new-game').show();
                   }
@@ -190,7 +194,6 @@ $(document).ready(function () {
           if (this.spaces[i][j].holds == -1) {
             var mineCell = 'div[data-row="' + (i + 1) + '"][data-col="' + (j + 1) + '"]';
             $(mineCell).addClass('mine');
-            $(mineCell).html('<i class="fa fa-mine"></i>');
           }
         }
       }
