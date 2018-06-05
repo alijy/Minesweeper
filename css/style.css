@@ -75,6 +75,11 @@ body {
     color: #333;
 }
 
+.safe {
+    background: #fff;
+    color: #777;
+}
+
 .cell .fa { line-height: 20px; }
 .cell .fa-mine { font-size: 20px; }
 .cell .fa-smile-o { font-size: 26px; }

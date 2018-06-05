@@ -50,7 +50,7 @@ $(document).ready(function () {
     this.spacesCleared = 0;
     this.mineCount = 0;
 
-    //Initialising the Object
+    //Initialising the cells
     this.spaces = new Array(this.row);
     for (i = 0; i < this.row; i++) {
         this.spaces[i] = new Array(this.col);
@@ -59,36 +59,69 @@ $(document).ready(function () {
         }
     }
 
-    //Initialising the cells
+    //Initialising the mines
     this.mineCount = mineNum();
     $('#value').html(this.mineCount);
     var mineIndex = mineIndexGenerator(this.mineCount, this.row, this.col);
     for (var i = 0; i < mineIndex.length; i++) {
       this.spaces[mineIndex[i][0]][mineIndex[i][1]] = new cell(false, -1);
     }
-    // for (var i = 0; i < this.row; i++) {
-    //   for (var j = 0; j < this.col; j++) {
-    //       this.spaces[i][j].holds = numMineNear.call(this, i, j);
-    //   }
-    // }
+    for (var i = 0; i < this.row; i++) {
+      for (var j = 0; j < this.col; j++) {
+          this.spaces[i][j].holds = numMineNear.call(this, i, j);
+      }
+    }
 
+    /*
+    * Returns the number of mines around the calling cell.
+    * If the cell itself contains a mine, -1 is returned.
+    */
+    function numMineNear(row, col) {
+      if (this.spaces[row][col].holds == -1) {
+        return -1;
+      } else {
+        var sum = 0;
+        sum += valueAt.call(this, row - 1, col - 1) // top left
+            + valueAt.call(this, row - 1, col) // top
+            + valueAt.call(this, row - 1, col + 1) // top right
+            + valueAt.call(this, row, col - 1) // left
+            + valueAt.call(this, row, col + 1) // right
+            + valueAt.call(this, row + 1, col - 1) // bottom left
+            + valueAt.call(this, row + 1, col) // bottom
+            + valueAt.call(this, row + 1, col + 1); // bottom right
+        return sum;
+      }
+    }
+
+    /*
+    * Checks a cell and returns 1 if it contains a mine and 0 otherwise
+    */
+    function valueAt(row, col) {
+      if (row < 0 || row >= this.row || col < 0 || col >= this.col) {
+          return 0;
+      } else if(this.spaces[row][col].holds == -1){
+          return 1;
+      } else {
+          return 0;
+      }
+    }
 
     this.click = function (target_element) {
       var row = $(target_element).attr("data-row");
       var col = $(target_element).attr("data-col");
-      // if (this.gameOver === true) {
-      //     return;
-      // }
-      // if (this.spaces[row - 1][col - 1].explored == true) {
-      //     return;
-      // }
+      if (this.gameOver === true) {
+        return;
+      }
+      if (this.spaces[row - 1][col - 1].explored == true) {
+        return;
+      }
       if (this.spaces[row - 1][col - 1].holds == -1) {
         this.explode();
-        // } else if (this.spaces[row - 1][col - 1].holds == 0) {
-        //     this.clear(row - 1, col - 1);
-        //     uncoverSurroundings.call(this, row - 1, col - 1);
-        // } else {
-        //     this.clear(row - 1, col - 1);
+        } else if (this.spaces[row - 1][col - 1].holds == 0) {
+          this.clear(row - 1, col - 1);
+          uncoverSurroundings.call(this, row - 1, col - 1);
+        } else {
+          this.clear(row - 1, col - 1);
       }
     }
 
@@ -105,25 +138,59 @@ $(document).ready(function () {
     }
 
     this.clear = function (row, col) {
-      var dom_target = 'div[data-row="' + (row + 1) + '"][data-col="' + (col + 1) + '"]';
-      $(dom_target).addClass('safe');
+      var mineCell = 'div[data-row="' + (row + 1) + '"][data-col="' + (col + 1) + '"]';
+      $(mineCell).addClass('safe');
       if (this.spaces[row][col].holds > 0) {
-        $(dom_target).text(this.spaces[row][col].holds);
+        $(mineCell).text(this.spaces[row][col].holds);
       } else {
-        $(dom_target).html('&nbsp');
+        $(mineCell).html('&nbsp');
       }
       checkAllCellsExplored.call(this);
       this.spacesCleared++;
       this.spaces[row][col].explored = true;
     }
 
+    function uncoverSurroundings(row, col) {
+      checkSpace.call(this, row - 1, col - 1); checkSpace.call(this, row - 1, col); checkSpace.call(this, row - 1, col + 1);
+      checkSpace.call(this, row, col - 1); checkSpace.call(this, row, col + 1);
+      checkSpace.call(this, row + 1, col - 1); checkSpace.call(this, row + 1, col); checkSpace.call(this, row + 1, col + 1);
+      checkAllCellsExplored.call(this);
+    }
+
+    function checkSpace(row, col) {
+      if (row < 0 || row >= this.row || col < 0 || col >= this.col || this.spaces[row][col].explored == true) {
+        return;
+      } else if (this.spaces[row][col].holds >= 0) {
+        this.clear(row, col);
+        if (this.spaces[row][col].holds == 0) {
+            uncoverSurroundings.call(this, row, col);
+            return;
+        }
+      }
+    }
+
+    function checkAllCellsExplored(){
+      if (this.row * this.col - this.spacesCleared == this.bombCount) {
+          for (i = 0; i < this.row; i++) {
+              for (j = 0; j < this.col; j++) {
+                  if (this.spaces[i][j].holds == -1) {
+                      var bomb_target = 'div[data-row="' + (i + 1) + '"][data-col="' + (j + 1) + '"]';
+                      $(bomb_target).html('<i class="fa fa-smile-o"></i>');
+                      this.gameOver = true;
+                      // $('#new-game').show();
+                  }
+              }
+          }
+      }
+    }
+
     this.explode = function() {
       for (i = 0; i < this.row; i++) {
         for (j = 0; j < this.col; j++) {
           if (this.spaces[i][j].holds == -1) {
-            var dom_target = 'div[data-row="' + (i + 1) + '"][data-col="' + (j + 1) + '"]';
-            $(dom_target).addClass('mine');
-            $(dom_target).html('<i class="fa fa-mine"></i>');
+            var mineCell = 'div[data-row="' + (i + 1) + '"][data-col="' + (j + 1) + '"]';
+            $(mineCell).addClass('mine');
+            $(mineCell).html('<i class="fa fa-mine"></i>');
           }
         }
       }
