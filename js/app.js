@@ -44,12 +44,13 @@ $(document).ready(function () {
     });
 
     $('.cell').mouseup(function(event) {
-      if (event.which == 3) {
-        var row = $(event.target).attr("data-row");
-        var col = $(event.target).attr("data-col");
-        console.log(">>["+row+","+col+"]");
-        var flagCell = 'div[data-row="' + row + '"][data-col="' + col + '"]';
-        $(flagCell).addClass('flag');
+      var mouseButton = event.which;
+      var row = $(event.target).attr("data-row");
+      var col = $(event.target).attr("data-col");
+      if (mouseButton == 1) {   // detects left click
+        board.leftClick(row, col);
+      } else if (event.which == 3) {    // detects right click
+        board.rightClick(row, col);
       }
     })
 
@@ -121,9 +122,9 @@ $(document).ready(function () {
       }
     }
 
-    this.click = function (event) {
-      var row = $(event).attr("data-row");
-      var col = $(event).attr("data-col");
+    this.click = function (target) {
+      var row = $(target).attr("data-row");
+      var col = $(target).attr("data-col");
       if (this.gameOver === true) {
         return;
       }
@@ -138,6 +139,17 @@ $(document).ready(function () {
         } else {
           this.clear(row - 1, col - 1);
       }
+    }
+
+    // this.leftClick = function
+
+    this.rightClick = function(row, col) {
+      console.log(">>["+row+","+col+"]");
+      if (this.gameOver === true || (this.spaces[row - 1][col - 1].explored == true))  {
+        return;
+      }
+      var flagCell = 'div[data-row="' + row + '"][data-col="' + col + '"]';
+      $(flagCell).addClass('flag');
     }
 
     this.render = function() {

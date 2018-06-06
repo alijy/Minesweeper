@@ -94,6 +94,6 @@ body {
 .cell .fa-mine { font-size: 14px; }
 .cell .fa-smile-o { font-size: 14px; }
 
-.cell:hover {
+/* .cell:hover {
   background: yellow;
-}
+} */
