@@ -58,17 +58,19 @@ body {
   /* position:absolute; */
 }
 
-#playAgaim {
-    text-align: center;
-    width: 420px;
-    background-color: #777;
-    color: #fff;
-    font-size: 38px;
-    padding: 15px 0;
-    cursor: pointer;
+#playAgain {
+  /* align-items: center; */
+  justify-content: center
+  width: 20vw;
+  background-color: #777;
+  color: #fff;
+  font-size: 38px;
+  padding: 15px 0;
+  cursor: pointer;
+  display: none;
 }
 
-#playAgaim:hover { background-color: #333; }
+#playAgain:hover { background-color: #333; }
 
 .cell {
   background: radial-gradient(#69D6FF, #4B99FF);

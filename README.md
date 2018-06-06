@@ -1,4 +1,4 @@
-#Break down of goal to a few smaller tasks:
+# Break down of goal to a few smaller tasks:
 
 1. Define rules
 2. Structure the game
@@ -10,7 +10,7 @@
 8. Implement the "reveal" logic
 
 
-##Defining the rules
+## Defining the rules
 
 1. The goal of the game is to find all mines on the board.
 
@@ -31,6 +31,15 @@
 - __Expert__:
 	- 30X16
 	- 99 mines (%20)
+
+## TODO
+- fix the *Play Again?* button
+- fix the flagged cells issue
+- implement the mine count down
+- implement the timer
+- implement **rule 7** above
+- add explosion animation
+- add audio
 
 
 <!--## Structure

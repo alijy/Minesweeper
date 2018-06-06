@@ -13,7 +13,6 @@ $(document).ready(function () {
   // Set the mode and initialise a new game in that mode
   var mode = 'beginner';
   newGame(mode);
-  $('#playAgaim').hide();
 
   $('#mode li').click(function() {
     $('#mode li').removeClass('selected');
@@ -22,23 +21,27 @@ $(document).ready(function () {
     newGame(mode);
   });
 
-  $('#playAgaim').click(function() {
-      var mode = $('#mode li.selected').attr('id');
-      newGame(mode);
-      $('#playAgaim').hide();
-      $('#board').show();
+  $('#playAgain').click(function() {
+    var mode = $('#mode li.selected').attr('id');
+    newGame(mode);
   });
 
 
-function endGame() {
-  $('#playAgaim').show();
-  $('#board').hide();
-}
+  function disableGame() {
+    $('#playAgain').show();
+    // $('#mode *').off('click');
+  }
+
+  function enableGame() {
+    $('#playAgain').hide();
+    // $('#mode *').on('click');
+  }
 
   /*
   * Generates a new game
   */
   function newGame(mode) {
+    enableGame();
     var board = new Board(modes[mode]) // generates  a new instance of board object
     board.render();
     // board.gameOver = false;
@@ -127,7 +130,7 @@ function endGame() {
           if (board.boardCells[i][j].holds == -1) {
             var bomb_target = 'div[cellRow="' + (i + 1) + '"][cellCol="' + (j + 1) + '"]';
             board.gameOver = true;
-            endGame();
+            disableGame();
           }
         }
       }
@@ -195,7 +198,7 @@ function endGame() {
         }
       }
       this.gameOver = true;
-      endGame();
+      disableGame();
     }
 
     // explores (reveals) a non-mine cell
