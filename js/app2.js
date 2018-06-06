@@ -29,12 +29,10 @@ $(document).ready(function () {
 
   function disableGame() {
     $('#playAgain').show();
-    // $('#mode *').off('click');
   }
 
   function enableGame() {
     $('#playAgain').hide();
-    // $('#mode *').on('click');
   }
 
   /*
@@ -70,9 +68,11 @@ $(document).ready(function () {
       if (board.boardCells[row][col].flagged) {
         $(flagCell).removeClass('flag');
         board.boardCells[row][col].flagged = false;
+        updateStats(board, 1);
       } else {
         $(flagCell).addClass('flag');
         board.boardCells[row][col].flagged = true;
+        updateStats(board, -1);
     }
     }
   }
@@ -138,6 +138,12 @@ $(document).ready(function () {
   }
 
 
+  function updateStats(board, change = 0) {
+    board.mineCount += change;
+    $('#value').html(board.mineCount);
+  }
+
+
   /*
   * board class constructor
   */
@@ -159,7 +165,7 @@ $(document).ready(function () {
     }
 
     //Initialising the mines
-    $('#value').html(this.mineCount);
+    updateStats(this);
     var mineIndex = mineLocationGenerator(this.mineCount, this.row, this.col);
     for (var i = 0; i < mineIndex.length; i++) {
       this.boardCells[mineIndex[i][0]][mineIndex[i][1]] = new cell(false, false, -1);
@@ -184,6 +190,7 @@ $(document).ready(function () {
       $('#board').empty();
       $('#board').append(cells);
     }
+
 
     // Reveals all mines and ends the game (maybe rewrite it with jquery later)
     this.explode = function() {
