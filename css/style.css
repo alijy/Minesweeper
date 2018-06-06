@@ -1,45 +1,45 @@
 html {
-    height: 100%;
+  height: 100%;
 }
 
 body {
-    margin: 0;
-    padding: 0;
-    border: none;
-    background-repeat: no-repeat;
-    background: linear-gradient(#000, #41444C);
-    color: white;
-    font-family: sans-serif;
-    font-size: 16px;
-    text-align: center;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background-repeat: no-repeat;
+  background: linear-gradient(#000, #41444C);
+  color: white;
+  font-family: sans-serif;
+  font-size: 16px;
+  text-align: center;
 }
 
 #dashboard {
-    text-align: center;
-    width: 438px;
-    margin: 30px auto;
-    font-weight: bold;
-    border-radius: 2px;
-    position: relative;
+  text-align: center;
+  width: 438px;
+  margin: 30px auto;
+  font-weight: bold;
+  border-radius: 2px;
+  position: relative;
 }
 
 #mode {
-    list-style: none;
-    padding: 0;
-    /* padding-left: 10px; */
-    display: inline-block;
+  list-style: none;
+  padding: 0;
+  /* padding-left: 10px; */
+  display: inline-block;
 }
 
 #mode li {
-    background-color: #006BFF;
-    color: #fff;
-    cursor: pointer;
-    display : inline-block;
-    font-size: 14px;
-    border-radius: 2px;
+  background-color: #006BFF;
+  color: #fff;
+  cursor: pointer;
+  display : inline-block;
+  font-size: 14px;
+  border-radius: 2px;
 
-    text-align: center;
-    padding: 6px 8px;
+  text-align: center;
+  padding: 6px 8px;
 }
 
 #mode li:hover {
@@ -60,14 +60,15 @@ body {
 
 #playAgain {
   /* align-items: center; */
-  justify-content: center
-  width: 20vw;
+  /* justify-content: center */
+  width: 20%;
   background-color: #777;
   color: #fff;
   font-size: 38px;
   padding: 15px 0;
   cursor: pointer;
   display: none;
+  margin: 20px auto;
 }
 
 #playAgain:hover { background-color: #333; }
@@ -86,22 +87,22 @@ body {
 }
 
 .mine {
-    color: #333;
-    background-size: contain;
-    background-color: radial-gradient(#eee, #bebebe);
-    background-image: url(../images/mine-white.png);
+  color: #333;
+  background-size: contain;
+  background-color: radial-gradient(#eee, #bebebe);
+  background-image: url(../images/mine-white.png);
 }
 
 .flag {
-    color: #333;
-    background-size: contain;
-    background-color: radial-gradient(#69D6FF, #4B99FF);
-    background-image: url(../images/flag-blue-small.png);
+  color: #333;
+  background-size: contain;
+  background-color: radial-gradient(#69D6FF, #4B99FF);
+  background-image: url(../images/flag-blue-small.png);
 }
 
 .safe {
-    background: radial-gradient(#eee, #bebebe);
-    color: #777;
+  background: radial-gradient(#eee, #bebebe);
+  color: #777;
 }
 
 
