@@ -58,6 +58,18 @@ body {
   /* position:absolute; */
 }
 
+#playAgaim {
+    text-align: center;
+    width: 420px;
+    background-color: #777;
+    color: #fff;
+    font-size: 38px;
+    padding: 15px 0;
+    cursor: pointer;
+}
+
+#playAgaim:hover { background-color: #333; }
+
 .cell {
   background: radial-gradient(#69D6FF, #4B99FF);
   display: inline-block;
@@ -90,9 +102,7 @@ body {
     color: #777;
 }
 
-.cell .fa { line-height: 20px; }
-.cell .fa-mine { font-size: 14px; }
-.cell .fa-smile-o { font-size: 14px; }
+
 
 /* .cell:hover {
   background: yellow;

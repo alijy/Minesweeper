@@ -1,8 +1,7 @@
 $(document).ready(function () {
 
   // Disable the right click button's menu.
-  function pressRightClick() { return false; }
-  document.oncontextmenu = pressRightClick;
+  document.oncontextmenu = function() { return false;};
 
   // An object including difficulty modes
   var modes = {
@@ -14,14 +13,27 @@ $(document).ready(function () {
   // Set the mode and initialise a new game in that mode
   var mode = 'beginner';
   newGame(mode);
+  $('#playAgaim').hide();
 
   $('#mode li').click(function() {
     $('#mode li').removeClass('selected');
     $(this).addClass('selected');
     mode = $(this).attr('id');
     newGame(mode);
-    // $('#new-game').hide();
   });
+
+  $('#playAgaim').click(function() {
+      var mode = $('#mode li.selected').attr('id');
+      newGame(mode);
+      $('#playAgaim').hide();
+      $('#board').show();
+  });
+
+
+function endGame() {
+  $('#playAgaim').show();
+  $('#board').hide();
+}
 
   /*
   * Generates a new game
@@ -34,8 +46,8 @@ $(document).ready(function () {
     // detects and acts on both left and right click
     $('.cell').mouseup(function(event) {
       var mouseButton = event.which;
-      var row = $(event.target).attr("cellRow");
-      var col = $(event.target).attr("cellCol");
+      var row = parseInt($(event.target).attr("cellRow"));
+      var col = parseInt($(event.target).attr("cellCol"));
       if (mouseButton == 1) {           // detects left click
         leftClick(board, row, col);
       } else if (event.which == 3) {    // detects right click
@@ -70,17 +82,57 @@ $(document).ready(function () {
   */
   function leftClick(board, row, col) {
     if ((board.gameOver == false) && (board.boardCells[row][col].explored == false)) {
-      if (board.boardCells[row][col].holds == -1) {
+      var content = board.boardCells[row][col].holds;
+      if (content == -1) {
         board.explode();
-      } else if (board.boardCells[row][col].holds == 0) {
+      } else if (content == 0) {
         board.clear(row, col);
-        uncoverSurroundings(board, row, col);
+        exploreNeigbours(board, row, col);
       } else {
         board.clear(row, col);
       }
     }
   }
 
+
+  function exploreNeigbours(board, row, col) {
+    checkCell(board, row - 1, col - 1);
+    checkCell(board, row - 1, col);
+    checkCell(board, row - 1, col + 1);
+    checkCell(board, row, col - 1);
+    checkCell(board, row, col + 1);
+    checkCell(board, row + 1, col - 1);
+    checkCell(board, row + 1, col);
+    checkCell(board, row + 1, col + 1);
+    checkAllCellsExplored(board);
+  }
+
+
+  function checkCell(board, row, col) {
+    if (row < 0 || row >= board.row || col < 0 || col >= board.col || board.boardCells[row][col].explored == true) {
+      return;
+    } else if (board.boardCells[row][col].holds >= 0) {
+      board.clear(row, col);
+      if (board.boardCells[row][col].holds == 0) {
+        exploreNeigbours(board, row, col);
+        return;
+      }
+    }
+  }
+
+  function checkAllCellsExplored(board){
+    if (board.row * board.col - board.spacesCleared == board.bombCount) {
+      for (i = 0; i < board.row; i++) {
+        for (j = 0; j < board.col; j++) {
+          if (board.boardCells[i][j].holds == -1) {
+            var bomb_target = 'div[cellRow="' + (i + 1) + '"][cellCol="' + (j + 1) + '"]';
+            board.gameOver = true;
+            endGame();
+          }
+        }
+      }
+    }
+  }
 
 
   /*
@@ -135,14 +187,33 @@ $(document).ready(function () {
       for (i = 0; i < this.row; i++) {
         for (j = 0; j < this.col; j++) {
           if (this.boardCells[i][j].holds == -1) {
-            var mineCell = 'div[data-row="' + (i + 1) + '"][data-col="' + (j + 1) + '"]';
+            var mineCell = 'div[cellRow="' + i + '"][cellCol="' + j + '"]';
             $(mineCell).addClass('mine');
+            // this.boardCells[i][j].flagged = false;  (// TODO: )
+            // $(mineCell).removeClass('flag');
           }
         }
       }
       this.gameOver = true;
-      $('#new-game').show();
+      endGame();
     }
+
+    // explores (reveals) a non-mine cell
+    this.clear = function (row, col) {
+      var mineCell = 'div[cellRow="' + row + '"][cellCol="' + col + '"]';
+      $(mineCell).addClass('safe');
+      if (this.boardCells[row][col].holds > 0) {
+        $(mineCell).text(this.boardCells[row][col].holds);    // sets the number on the cell
+      } else {
+        $(mineCell).html('&nbsp;');    // sets an empty space on the cell
+      }
+      // checkAllCellsExplored.call(this);  // TODO:
+      this.spacesCleared++;
+      this.boardCells[row][col].explored = true;
+      this.boardCells[row][col].flagged = false;
+    }
+
+
 
   }
 
