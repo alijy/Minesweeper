@@ -129,6 +129,21 @@ $(document).ready(function () {
       $('#board').empty();
       $('#board').append(cells);
     }
+
+    // Reveals all mines and ends the game (maybe rewrite it with jquery later)
+    this.explode = function() {
+      for (i = 0; i < this.row; i++) {
+        for (j = 0; j < this.col; j++) {
+          if (this.boardCells[i][j].holds == -1) {
+            var mineCell = 'div[data-row="' + (i + 1) + '"][data-col="' + (j + 1) + '"]';
+            $(mineCell).addClass('mine');
+          }
+        }
+      }
+      this.gameOver = true;
+      $('#new-game').show();
+    }
+
   }
 
 
