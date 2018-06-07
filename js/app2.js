@@ -112,7 +112,12 @@ $(document).ready(function () {
 
 
   function checkCell(board, row, col) {
-    if (row < 0 || row >= board.row || col < 0 || col >= board.col || board.boardCells[row][col].explored == true) {
+    if (row < 0
+        || row >= board.row
+        || col < 0
+        || col >= board.col
+        || board.boardCells[row][col].explored == true
+        || board.boardCells[row][col].flagged == true) {
       return;
     } else if (board.boardCells[row][col].holds >= 0) {
       board.clear(row, col);
