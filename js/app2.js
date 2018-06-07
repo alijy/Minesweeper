@@ -198,7 +198,7 @@ $(document).ready(function () {
         for (j = 0; j < this.col; j++) {
           if (this.boardCells[i][j].holds == -1) {
             var mineCell = 'div[cellRow="' + i + '"][cellCol="' + j + '"]';
-            $(mineCell).addClass('mine');
+            $(mineCell).addClass('mine').css("background-image", "url('images/mine1.gif')");
             // this.boardCells[i][j].flagged = false;  (// TODO: )
             // $(mineCell).removeClass('flag');
           }

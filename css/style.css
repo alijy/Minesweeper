@@ -90,7 +90,8 @@ body {
   color: #333;
   background-size: contain;
   background-color: radial-gradient(#eee, #bebebe);
-  background-image: url(../images/mine-white.png);
+  /* background-image: url(../images/mine-white.png); */
+  /* background-image: url(../images/mine1.gif); */
 }
 
 .flag {
