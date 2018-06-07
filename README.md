@@ -39,6 +39,7 @@
 - implement the timer
 - implement **rule 7** above
 - add explosion animation
+- replace numbers with pictures
 - add audio
 - add media query
 

@@ -198,7 +198,11 @@ $(document).ready(function () {
         for (j = 0; j < this.col; j++) {
           if (this.boardCells[i][j].holds == -1) {
             var mineCell = 'div[cellRow="' + i + '"][cellCol="' + j + '"]';
-            $(mineCell).addClass('mine').css("background-image", "url('images/mine1.gif')");
+            var imgUrl = "url('images/mine1.gif?random=" + Math.floor(Math.random() * 10000000 + 1000000) + "')"
+            console.log(imgUrl);
+            $(mineCell).addClass('mine').css("background-image", imgUrl);
+            // $(mineCell).find('img').attr("src", "images/mine1.gif");
+            // console.log($(mineCell).find('img').attr('src'));
             // this.boardCells[i][j].flagged = false;  (// TODO: )
             // $(mineCell).removeClass('flag');
           }
