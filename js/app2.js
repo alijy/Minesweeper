@@ -10,6 +10,9 @@ $(document).ready(function () {
     expert : [16, 30, 99]
   }
 
+  // defining a timer
+  var timer;
+
   // Set the mode and initialise a new game in that mode
   var mode = 'beginner';
   newGame(mode);
@@ -33,6 +36,23 @@ $(document).ready(function () {
 
   function enableGame() {
     $('#playAgain').hide();
+    clearInterval(timer);  // stop any running timer
+
+    var start = new Date().getTime();  // keeps the start time for calculations
+
+    // updates the timer every second
+    timer = setInterval(function(){
+      var time = new Date().getTime() - start; // gets the elapsed time since start
+      var seconds = Math.floor((time % (1000 * 60)) / 1000);
+      var minutes = Math.floor((time % (1000 * 60 * 60)) / (1000 * 60));
+      var hours = Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+
+      // Display the result in the element with id="timer"
+      if (seconds < 10) { seconds = "0"+seconds}
+      if (minutes < 10) { minutes = "0"+minutes}
+      $('#timer').text(hours + ":" + minutes + ":" + seconds);
+
+    }, 1000);
   }
 
   /*
@@ -68,11 +88,12 @@ $(document).ready(function () {
       if (board.boardCells[row][col].flagged) {
         $(flagCell).removeClass('flag');
         board.boardCells[row][col].flagged = false;
-        updateStats(board, 1);
+        updateStats(board, -1);
       } else {
         $(flagCell).addClass('flag');
         board.boardCells[row][col].flagged = true;
-        updateStats(board, -1);
+        updateStats(board, 1);
+        checkAllCellsExplored(board);
     }
     }
   }
@@ -129,23 +150,17 @@ $(document).ready(function () {
   }
 
   function checkAllCellsExplored(board){
-    if (board.row * board.col - board.spacesCleared == board.bombCount) {
-      for (i = 0; i < board.row; i++) {
-        for (j = 0; j < board.col; j++) {
-          if (board.boardCells[i][j].holds == -1) {
-            var bomb_target = 'div[cellRow="' + (i + 1) + '"][cellCol="' + (j + 1) + '"]';
-            board.gameOver = true;
-            disableGame();
-          }
-        }
-      }
+    console.log(board.row * board.col - board.cellsCleared + " ::: " + board.mineCount);
+    if (board.row * board.col - board.cellsCleared == board.mineCount) {
+      board.gameOver = true;
+      disableGame();
     }
   }
 
 
   function updateStats(board, change = 0) {
-    board.mineCount += change;
-    $('#value').html(board.mineCount);
+    board.flagCount += change;
+    $('#value').html(board.mineCount - board.flagCount);
   }
 
 
@@ -156,9 +171,11 @@ $(document).ready(function () {
     this.row = mode[0];
     this.col = mode[1];
     this.mineCount = mode[2];
+    this.flagCount = 0;
     this.boardCells = [];
     this.gameOver = false;
     this.cellsCleared = 0;
+    updateStats(this);
 
     //Initialising the cells
     this.boardCells = new Array(this.row);
@@ -170,7 +187,6 @@ $(document).ready(function () {
     }
 
     //Initialising the mines
-    updateStats(this);
     var mineIndex = mineLocationGenerator(this.mineCount, this.row, this.col);
     for (var i = 0; i < mineIndex.length; i++) {
       this.boardCells[mineIndex[i][0]][mineIndex[i][1]] = new cell(false, false, -1);
@@ -205,10 +221,7 @@ $(document).ready(function () {
           if (this.boardCells[i][j].holds == -1 && this.boardCells[i][j].flagged == false) {
             var imgUrl = "url('images/mine1.gif?random=" + Math.floor(Math.random() * 10000000 + 1000000) + "')"
             $(mineCell).addClass('mine').css("background-image", imgUrl);
-            // this.boardCells[i][j].flagged = false;  (// TODO: )
-            // $(mineCell).removeClass('flag');
           } else if (this.boardCells[i][j].holds != -1 && this.boardCells[i][j].flagged == true) {
-            // $(mineCell).removeClass('flag');
             $(mineCell).css('background-image', 'url(images/badFlag.png)');
           }
         }
@@ -226,10 +239,10 @@ $(document).ready(function () {
       } else {
         $(mineCell).html('&nbsp;');    // sets an empty space on the cell
       }
-      // checkAllCellsExplored.call(this);  // TODO:
-      this.spacesCleared++;
+      this.cellsCleared++;
       this.boardCells[row][col].explored = true;
       this.boardCells[row][col].flagged = false;
+      checkAllCellsExplored(this);
     }
 
 

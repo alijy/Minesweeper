@@ -34,7 +34,7 @@
 
 ## TODO
 - fix the *Play Again?* button
-- fix the flagged cells issue
+- ~~fix the flagged cells issue~~
 - ~~implement the mine count down~~
 - implement the timer
 - implement **rule 7** above
