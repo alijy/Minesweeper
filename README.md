@@ -79,7 +79,7 @@ Usually double-clicking the file name opens the file in your default web browser
 
 ### Challenges:
 
-1. Javascript doesn't have a right-click event listener!!
+1. Javascript doesn't have a right-click event!!
 
 	**Solution:** Use the ```.mouseup()``` event and ```event.which```.
 	
