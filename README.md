@@ -81,13 +81,38 @@ Usually double-clicking the file name opens the file in your default web browser
 
 1. Javascript doesn't have a right-click event listener!!
 
-	**Solution:** Use the *.mouseup()* event listener instead.
+	**Solution:** Use the ```.mouseup()``` event and ```event.which```.
+	
+	```
+	$('.cell').mouseup(function(event) {
+	      var mouseButton = event.which;
+	      var row = parseInt($(event.target).attr("cellRow"));
+	      var col = parseInt($(event.target).attr("cellCol"));
+	
+	      if (mouseButton == 1) {
+	        leftClick(board, row, col);
+	      } else if (event.which == 3) {
+	        rightClick(board, row, col);
+	      }
+	
+	      if ($('#timer').text() == "0:00:00") {
+	        timerStarter();
+	      }
+	    })
+	
+	```
+
 
 2. I used a *.gif* file on all mine locations to animate the explosion of mines. But, uploading and playing several versions of the same file several times without refreshing the page is not feasible.
 
 	**Solution:** Create a unique url for every *.gif* image that needs to be displayed by following the link with ```?random=```followed by a random number from a very large pool of random numbers. This way each url is unique while pointing to the same image.
-
-
+	
+	```
+	var imgUrl = "url('images/mine1.gif?random=" + Math.floor(Math.random() * 10000000 + 1000000) + "')";
+	
+	$(mineCell).addClass('mine').css("background-image", imgUrl);
+	
+	```
 
 <!--## TODO
 - ~~fix the *Play Again?* button~~
