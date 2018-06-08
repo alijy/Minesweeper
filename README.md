@@ -1,3 +1,38 @@
+# Minesweeper
+
+Minesweeper is a single-player puzzle game. The objective of the game is to clear a rectangular board containing hidden *"mines"* or bombs without detonating any of them, with help from clues about the number of neighboring mines in each field. The game originates from the 1960s, and has been written for many computing platforms in use today. It has many variations and offshoots.
+
+## How to Play
+You can play Minesweeper in three different modes. These modes represent different difficulty levels of the game. The modes are:
+
+- __Beginner__: A simple 9 X 9 grid containing 10 hidden mines which cover about **12%** of the grid.
+
+- __Intermediate__: A more challenging 16 X 16 grid containing 40 hidden mines which covers about **16%** of the grid.
+
+- __Expert__: The most challenging mode which is a grid of size 16 X 30 with 99 mines that makes about **20%** of the grid.
+
+Each cell of the grid is of one of the 3 different types:
+
+- *Mine cell:* This cell contains a mine and if revealed, you lose the game.
+- *Empty cell:* This is an empty cell with no adjacent mine. If revealed, it also reveals all it's adjacent cells all of which are safe *(i.e. non-mine cell)*
+- *Numbered cell:* This is also an empty cell but with some adjacent mines. If revealed, it shows a number which represents the number of adjacent cells that contain a mine.
+
+The game starts by default on the *Beginner* mode. There are 3 ways to interact with the board:
+
+**1. Click:** If you click on a cell which hasn't been explored (revealed) before, it reveals the content of that cell which is one of the 3 types mentioned above.
+
+**2. Right-Click:** If you right-click on an unexplored cell with no flag, it adds a flag on that cell to mark the location of a mine. If you right-click on a flagged cell, the flag is removed.
+
+**3. Double-Click:** If you double-click on a revealed and numbered cell, if the cell's number matches the number of flags surrounding it, any other unexplored and unflagged adjacent cells are revealed. These could be empty cells, numbered cells or even mine cells which will end the game if revealed.
+
+**Your task** is to clear the board without detonating any of the mines.
+
+You can play this game online [here](https://alijy.github.io/Minesweeper/)
+
+Have fun!
+
+## How to Implement
+
 # Break down of goal to a few smaller tasks:
 
 1. Define rules
