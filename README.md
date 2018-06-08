@@ -46,7 +46,9 @@ Have fun!
 
 
 ## How to Download and Run the Game on your Local Machine
-To download the game go to the top of this page and click on ![download button](images/download-link.png). Then click on **Download ZIP** and save the zip file to your local machine. After unzipping the file go to **Minesweeper** folder and open the *index.html* file in you browser. Usually double-clicking the file name opens the file in your default web browser. If that doesn't work, copy the location of the *index.html* file and paste it into your browser's address bar and press enter. You should be good to go! ENJOY!
+To download the game go to the top of this page and click on ![download button](images/download-link.png). Then click on **Download ZIP** and save the zip file to your local machine. After unzipping the file go to **Minesweeper** folder and open the *index.html* file in you browser. 
+
+Usually double-clicking the file name opens the file in your default web browser. If that doesn't work, copy the location of the *index.html* file and paste it into your browser's address bar and press enter. You should be good to go! ENJOY!
 
 
 ## Implementation Considerations
@@ -67,12 +69,24 @@ To download the game go to the top of this page and click on ![download button](
 
 1. The goal of the game is to find all mines on the board.
 
-2. You reveal mines by clicking the board fields.
-3. If you reveal a field with mine you lose the game.
-4. If you reveal field without a mine it will show exact number of mines surrounding that field.
-5. If you reveal field without number it means that there are no mines in its surroundings. In that case board will reveal all connected empty fields with its surroundings.
-6. You can flag field by right-clicking it.
-7. If you click on a revealed field and you already flagged all mines around that field, board will reveal rest of the hidden fields. Of course, if you misplaced flags you will reveal a field with a mine and lose the game.
+2. You reveal mines by clicking the board cells.
+
+3. If you reveal a cell with a mine you lose the game.
+4. If you reveal a cell without a mine it will show exact number of mines surrounding that cell.
+5. If you reveal a cell without a number it means that there are no mines in its surroundings. In that case board will reveal all connected empty fields with its surroundings.
+6. You can flag a cell by right-clicking it.
+7. If you double-click on a revealed cell and you already flagged all mines around that cell, the board will reveal the rest of the hidden (unflagged) cells. Of course, if you misplaced flags you will reveal a cell with a mine and lose the game.
+
+### Challenges:
+
+1. Javascript doesn't have a right-click event listener!!
+
+	**Solution:** Use the *.mouseup()* event listener instead.
+
+2. I used a *.gif* file on all mine locations to animate the explosion of mines. But, uploading and playing several versions of the same file several times without refreshing the page is not feasible.
+
+	**Solution:** Create a unique url for every *.gif* image that needs to be displayed by following the link with ```?random=```followed by a random number from a very large pool of random numbers. This way each url is unique while pointing to the same image.
+
 
 
 <!--## TODO
