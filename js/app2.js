@@ -53,6 +53,7 @@ $(document).ready(function () {
     var start = new Date().getTime();  // keeps the start time for calculations
 
     // updates the timer every second
+    clearInterval(timer);
     timer = setInterval(function(){
       var time = new Date().getTime() - start; // gets the elapsed time since start
       var seconds = Math.floor((time % (1000 * 60)) / 1000);
@@ -63,7 +64,7 @@ $(document).ready(function () {
       if (seconds < 10) { seconds = "0"+seconds}
       if (minutes < 10) { minutes = "0"+minutes}
       $('#timer').text(hours + ":" + minutes + ":" + seconds);
-
+      console.log(hours + ":" + minutes + ":" + seconds);
     }, 1000);
   }
 
@@ -82,17 +83,24 @@ $(document).ready(function () {
       var row = parseInt($(event.target).attr("cellRow"));
       var col = parseInt($(event.target).attr("cellCol"));
 
-      // jumpstart the timer on first left/right click
-      if ($('#timer').text() == "0:00:00") {
-        timerStarter();
-      }
-
       // detect the type of click (left or right)
       if (mouseButton == 1) {           // detects left click
         leftClick(board, row, col);
       } else if (event.which == 3) {    // detects right click
         rightClick(board, row, col);
       }
+
+      // jumpstart the timer on first left/right click
+      if ($('#timer').text() == "0:00:00") {
+        timerStarter();
+      }
+    })
+
+    // detects and acts on double click
+    $('.cell').dblclick(function() {
+      var row = parseInt($(event.target).attr("cellRow"));
+      var col = parseInt($(event.target).attr("cellCol"));
+      doubleClick(board, row, col);
     })
   }
 
@@ -130,7 +138,7 @@ $(document).ready(function () {
         board.explode();
       } else if (content == 0) {
         board.clear(row, col);
-        exploreNeigbours(board, row, col);
+        exploreNeighbours(board, row, col);
       } else {
         board.clear(row, col);
       }
@@ -138,31 +146,70 @@ $(document).ready(function () {
   }
 
 
-  function exploreNeigbours(board, row, col) {
-    checkCell(board, row - 1, col - 1);
-    checkCell(board, row - 1, col);
-    checkCell(board, row - 1, col + 1);
-    checkCell(board, row, col - 1);
-    checkCell(board, row, col + 1);
-    checkCell(board, row + 1, col - 1);
-    checkCell(board, row + 1, col);
-    checkCell(board, row + 1, col + 1);
+  /*
+  * Performing the double-click action.
+  * If an explored and numbered cell is double-clicked, it checks whether the number of adjacent flags match cell's number.
+  * If they match, all other unexplored neighbours are explored automatically.
+  */
+  function doubleClick(board, row, col) {
+    var cell = 'div[cellRow="' + row + '"][cellCol="' + col + '"]';
+    var cellMineCount = board.boardCells[row][col].holds;
+    if (cellMineCount > 0 &&  cellMineCount == neighbourFlags(board, row, col)) {
+      getNeighbours(board,row,col).forEach(function(nb){
+        if (board.boardCells[nb[0]][nb[1]].explored == false  && board.boardCells[nb[0]][nb[1]].flagged == false) {
+          leftClick(board,nb[0],nb[1]);
+        }
+      })
+    }
+  }
+
+
+  // return a 2-dimensional array of available adjacent cells.
+  function getNeighbours(board, row, col) {
+    var neighbours = [[row - 1, col - 1],
+                      [row - 1, col],
+                      [row - 1, col + 1],
+                      [row, col - 1],
+                      [row, col + 1],
+                      [row + 1, col - 1],
+                      [row + 1, col],
+                      [row + 1, col + 1]];
+    var realNeighbours = [];
+    neighbours.forEach(function(nb) {
+      if (nb[0] >= 0 && nb[0] < board.row && nb[1] >= 0 && nb[1] < board.col){
+        realNeighbours.push(nb);
+      }
+    })
+    return realNeighbours;
+  }
+
+  // returns the number of flagged neighbours of a given cell
+  function neighbourFlags(board, row, col) {
+    var sum = 0;
+    getNeighbours(board, row, col).forEach(function(nb) {
+      if(board.boardCells[nb[0]][nb[1]].flagged) {
+        sum++;
+      }
+    })
+    return sum;
+  }
+
+
+  function exploreNeighbours(board, row, col) {
+    getNeighbours(board,row,col).forEach(function(nb){
+      checkCell(board, nb[0], nb[1]);
+    })
     checkAllCellsExplored(board);
   }
 
 
   function checkCell(board, row, col) {
-    if (row < 0
-        || row >= board.row
-        || col < 0
-        || col >= board.col
-        || board.boardCells[row][col].explored == true
-        || board.boardCells[row][col].flagged == true) {
-      return;
-    } else if (board.boardCells[row][col].holds >= 0) {
+    if (board.boardCells[row][col].explored == false
+        && board.boardCells[row][col].flagged == false
+        && (board.boardCells[row][col].holds >= 0)) {
       board.clear(row, col);
       if (board.boardCells[row][col].holds == 0) {
-        exploreNeigbours(board, row, col);
+        exploreNeighbours(board, row, col);
         return;
       }
     }
@@ -237,16 +284,18 @@ $(document).ready(function () {
         for (j = 0; j < this.col; j++) {
           var mineCell = 'div[cellRow="' + i + '"][cellCol="' + j + '"]';
           if (this.boardCells[i][j].holds == -1 && this.boardCells[i][j].flagged == false) {
-            var imgUrl = "url('images/mine1.gif?random=" + Math.floor(Math.random() * 10000000 + 1000000) + "')"
+            var imgUrl = "url('images/mine1.gif?random=" + Math.floor(Math.random() * 10000000 + 1000000) + "')";
             $(mineCell).addClass('mine').css("background-image", imgUrl);
-            var clone = explosionSound[0];
-            clone.play();
+            setTimeout(function() {   // sets a time delay to match sound and animation
+              explosionSound[0].play();
+            },1200)
           } else if (this.boardCells[i][j].holds != -1 && this.boardCells[i][j].flagged == true) {
             $(mineCell).css('background-image', 'url(images/badFlag.png)');
           }
         }
       }
       this.gameOver = true;
+      console.log('disabling after explode ....');
       disableGame('Lose');
     }
 
