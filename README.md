@@ -46,14 +46,14 @@ Have fun!
 
 ## How to Implement
 
-# Break down of goal to a few smaller tasks:
+### Break down of goal to a few smaller tasks:
 
-1. Define rules
+1. Define the rules
 2. Structure the game
 3. Draw the board
-	1. Draw fields
+	1. Draw cells
 	2. Plant mines
-	3. Calculate distances
+	3. Calculate the adjacent mines
 7. Find a way to traverse the board
 8. Implement the "reveal" logic
 
