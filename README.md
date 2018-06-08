@@ -114,6 +114,10 @@ Usually double-clicking the file name opens the file in your default web browser
 	
 	```
 
+## Future Development
+**- Adding an expolsion propagation feature:** If you hit a mine it explodes and the explosion gradually propagates to detonate other mines which are further away.
+
+
 <!--## TODO
 - ~~fix the *Play Again?* button~~
 - ~~fix the flagged cells issue~~
