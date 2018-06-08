@@ -32,12 +32,16 @@ $(document).ready(function () {
 
   function disableGame() {
     $('#playAgain').show();
+    clearInterval(timer);   // stops the running timer
   }
 
   function enableGame() {
     $('#playAgain').hide();
-    clearInterval(timer);  // stop any running timer
+    clearInterval(timer);   // stops the running timer
+    $('#timer').text("0:00:00");
+  }
 
+  function timerStarter() {
     var start = new Date().getTime();  // keeps the start time for calculations
 
     // updates the timer every second
@@ -55,6 +59,7 @@ $(document).ready(function () {
     }, 1000);
   }
 
+
   /*
   * Generates a new game
   */
@@ -62,13 +67,19 @@ $(document).ready(function () {
     enableGame();
     var board = new Board(modes[mode]) // generates  a new instance of board object
     board.render();
-    // board.gameOver = false;
 
     // detects and acts on both left and right click
     $('.cell').mouseup(function(event) {
       var mouseButton = event.which;
       var row = parseInt($(event.target).attr("cellRow"));
       var col = parseInt($(event.target).attr("cellCol"));
+
+      // jumpstart the timer on first left/right click
+      if ($('#timer').text() == "0:00:00") {
+        timerStarter();
+      }
+
+      // detect the type of click (left or right)
       if (mouseButton == 1) {           // detects left click
         leftClick(board, row, col);
       } else if (event.which == 3) {    // detects right click
@@ -150,7 +161,6 @@ $(document).ready(function () {
   }
 
   function checkAllCellsExplored(board){
-    console.log(board.row * board.col - board.cellsCleared + " ::: " + board.mineCount);
     if (board.row * board.col - board.cellsCleared == board.mineCount) {
       board.gameOver = true;
       disableGame();
