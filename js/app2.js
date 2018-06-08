@@ -10,8 +10,11 @@ $(document).ready(function () {
     expert : [16, 30, 99]
   }
 
-  // defining a timer
+  // timers
   var timer;
+
+  // sound effects
+  var explosionSound = $('#explosionSound');
 
   // Set the mode and initialise a new game in that mode
   var mode = 'beginner';
@@ -236,6 +239,8 @@ $(document).ready(function () {
           if (this.boardCells[i][j].holds == -1 && this.boardCells[i][j].flagged == false) {
             var imgUrl = "url('images/mine1.gif?random=" + Math.floor(Math.random() * 10000000 + 1000000) + "')"
             $(mineCell).addClass('mine').css("background-image", imgUrl);
+            var clone = explosionSound[0];
+            clone.play();
           } else if (this.boardCells[i][j].holds != -1 && this.boardCells[i][j].flagged == true) {
             $(mineCell).css('background-image', 'url(images/badFlag.png)');
           }

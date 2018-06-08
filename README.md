@@ -41,7 +41,7 @@
 - add explosion animation
 - replace numbers with pictures
 - add audio
-- add media query
+- ~~add media query~~
 
 
 <!--## Structure
