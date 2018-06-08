@@ -40,11 +40,16 @@ The game starts by default on the *Beginner* mode. There are 3 ways to interact 
 ![win screenshot](images/win-screenshot.png)
 
 
-You can play this game online [here](https://alijy.github.io/Minesweeper/)
+You can play this game online [here](https://alijy.github.io/Minesweeper/). 
 
 Have fun!
 
-## How to Implement
+
+## How to Download and Run the Game on your Local Machine
+To download the game go to the top of this page and click on ![download button](images/download-link.png). Then click on **Download ZIP** and save the zip file to your local machine. After unzipping the file go to **Minesweeper** folder and open the *index.html* file in you browser. Usually double-clicking the file name opens the file in your default web browser. If that doesn't work, copy the location of the *index.html* file and paste it into your browser's address bar and press enter. You should be good to go! ENJOY!
+
+
+## Implementation Considerations
 
 ### Break down of goal to a few smaller tasks:
 
@@ -55,10 +60,10 @@ Have fun!
 	2. Plant mines
 	3. Calculate the adjacent mines
 7. Find a way to traverse the board
-8. Implement the "reveal" logic
+8. Implement the "reveal" logics
 
 
-## Defining the rules
+### Define the rules:
 
 1. The goal of the game is to find all mines on the board.
 
@@ -69,18 +74,8 @@ Have fun!
 6. You can flag field by right-clicking it.
 7. If you click on a revealed field and you already flagged all mines around that field, board will reveal rest of the hidden fields. Of course, if you misplaced flags you will reveal a field with a mine and lose the game.
 
-## Boards
-- __Beginner__: 
-	- 9 X 9
-	- 10 mines (%12)
-- __Intermediate__:
-	- 16 X 16
-	- 40 mines (%16)
-- __Expert__:
-	- 30X16
-	- 99 mines (%20)
 
-## TODO
+<!--## TODO
 - ~~fix the *Play Again?* button~~
 - ~~fix the flagged cells issue~~
 - ~~implement the mine count down~~
@@ -90,10 +85,5 @@ Have fun!
 - replace numbers with pictures
 - ~~add audio~~
 - ~~add media query~~
-
-
-<!--## Structure
-- Game
-	- startGame()
-- Board
 -->
+
