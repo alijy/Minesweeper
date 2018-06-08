@@ -37,7 +37,7 @@ $(document).ready(function () {
   // Disables the game board
   function disableGame(result) {
     clearInterval(timer);   // stops the running timer
-    $('#mode li').addClass('animated hinge');   // hides mode selection buttons
+    $('#mode li').addClass('animated zoomOut');   // hides mode selection buttons
     $('#gameResult').text('You ' + result + '!').css('display' , 'inline-block');  // displays the game result
     $('#playAgain').show(); // displays the 'Play Again?' button
   }
@@ -45,7 +45,7 @@ $(document).ready(function () {
   // Enables the game board
   function enableGame() {
     clearInterval(timer);   // stops the running timer
-    $('#mode li').removeClass('animated hinge');  // displays mode selection buttons
+    $('#mode li').removeClass('animated zoomOut');  // displays mode selection buttons
     $('#gameResult').text('You Win!').css('display' , 'none');  // hides game result
     $('#playAgain').hide(); // hides the 'Play Again?' button
     $('#timer').text("0:00:00");
