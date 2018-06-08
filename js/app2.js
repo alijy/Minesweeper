@@ -20,6 +20,7 @@ $(document).ready(function () {
   var mode = 'beginner';
   newGame(mode);
 
+  // adding click event listener for mode selection
   $('#mode li').click(function() {
     $('#mode li').removeClass('selected');
     $(this).addClass('selected');
@@ -27,12 +28,13 @@ $(document).ready(function () {
     newGame(mode);
   });
 
+  // adding event listener for re-play button
   $('#playAgain').click(function() {
     var mode = $('#mode li.selected').attr('id');
     newGame(mode);
   });
 
-
+  // Disables the game board
   function disableGame(result) {
     clearInterval(timer);   // stops the running timer
     $('#mode li').addClass('animated hinge');   // hides mode selection buttons
@@ -40,6 +42,7 @@ $(document).ready(function () {
     $('#playAgain').show(); // displays the 'Play Again?' button
   }
 
+  // Enables the game board
   function enableGame() {
     clearInterval(timer);   // stops the running timer
     $('#mode li').removeClass('animated hinge');  // displays mode selection buttons
@@ -195,6 +198,7 @@ $(document).ready(function () {
   }
 
 
+  // checks all adjacent cell of the given cell recursively (using 'checkCell' function)
   function exploreNeighbours(board, row, col) {
     getNeighbours(board,row,col).forEach(function(nb){
       checkCell(board, nb[0], nb[1]);
@@ -203,6 +207,7 @@ $(document).ready(function () {
   }
 
 
+  // checks whether a given cell can be cleared (i.e. no mine) and if it's empty calls 'exploreNeighbours' to check adjacent cells
   function checkCell(board, row, col) {
     if (board.boardCells[row][col].explored == false
         && board.boardCells[row][col].flagged == false
@@ -215,6 +220,8 @@ $(document).ready(function () {
     }
   }
 
+
+  // detects a winning condition by checking whether all safe cells are explored
   function checkAllCellsExplored(board){
     if (board.row * board.col - board.cellsCleared == board.mineCount) {
       board.gameOver = true;
@@ -223,6 +230,7 @@ $(document).ready(function () {
   }
 
 
+  // updates the number of unflagged mines on the screen
   function updateStats(board, change = 0) {
     board.flagCount += change;
     $('#value').html(board.mineCount - board.flagCount);
@@ -284,7 +292,7 @@ $(document).ready(function () {
         for (j = 0; j < this.col; j++) {
           var mineCell = 'div[cellRow="' + i + '"][cellCol="' + j + '"]';
           if (this.boardCells[i][j].holds == -1 && this.boardCells[i][j].flagged == false) {
-            var imgUrl = "url('images/mine1.gif?random=" + Math.floor(Math.random() * 10000000 + 1000000) + "')";
+            var imgUrl = "url('images/mine1.gif?random=" + Math.floor(Math.random() * 10000000 + 1000000) + "')"; // creates a unique image url
             $(mineCell).addClass('mine').css("background-image", imgUrl);
             setTimeout(function() {   // sets a time delay to match sound and animation
               explosionSound[0].play();
@@ -295,9 +303,9 @@ $(document).ready(function () {
         }
       }
       this.gameOver = true;
-      console.log('disabling after explode ....');
       disableGame('Lose');
     }
+
 
     // explores (reveals) a non-mine cell
     this.clear = function (row, col) {
@@ -313,9 +321,6 @@ $(document).ready(function () {
       this.boardCells[row][col].flagged = false;
       checkAllCellsExplored(this);
     }
-
-
-
   }
 
 
@@ -323,9 +328,9 @@ $(document).ready(function () {
   * cell class constructor
   */
   function cell(explored, flagged, holds){
-    this.explored = explored;
-    this.flagged = flagged;
-    this.holds = holds;
+    this.explored = explored;   // true if the cell is explored
+    this.flagged = flagged;     // true if the cell is flagged
+    this.holds = holds;         // -1 if the cell contains a mine, the number of adjacent mines otherwise
   }
 
 
@@ -335,17 +340,11 @@ $(document).ready(function () {
       return -1;
     } else {
       var sum = 0;
-      sum += valueAt(board, row - 1, col - 1) // top left
-          + valueAt(board, row - 1, col) // top
-          + valueAt(board, row - 1, col + 1) // top right
-          + valueAt(board, row, col - 1) // left
-          + valueAt(board, row, col + 1) // right
-          + valueAt(board, row + 1, col - 1) // bottom left
-          + valueAt(board, row + 1, col) // bottom
-          + valueAt(board, row + 1, col + 1); // bottom right
+      getNeighbours(board, row, col).forEach(function(nb){
+        sum += valueAt(board, nb[0], nb[1]);
+      })
       return sum;
     }
-
   }
 
 
