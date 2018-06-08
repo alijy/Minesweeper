@@ -30,17 +30,22 @@ $(document).ready(function () {
   });
 
 
-  function disableGame() {
-    $('#playAgain').show();
+  function disableGame(result) {
     clearInterval(timer);   // stops the running timer
+    $('#mode li').addClass('animated hinge');   // hides mode selection buttons
+    $('#gameResult').text('You ' + result + '!').css('display' , 'inline-block');  // displays the game result
+    $('#playAgain').show(); // displays the 'Play Again?' button
   }
 
   function enableGame() {
-    $('#playAgain').hide();
     clearInterval(timer);   // stops the running timer
+    $('#mode li').removeClass('animated hinge');  // displays mode selection buttons
+    $('#gameResult').text('You Win!').css('display' , 'none');  // hides game result
+    $('#playAgain').hide(); // hides the 'Play Again?' button
     $('#timer').text("0:00:00");
   }
 
+  // when called this function starts the timer and updates it on the screen every second
   function timerStarter() {
     var start = new Date().getTime();  // keeps the start time for calculations
 
@@ -163,7 +168,7 @@ $(document).ready(function () {
   function checkAllCellsExplored(board){
     if (board.row * board.col - board.cellsCleared == board.mineCount) {
       board.gameOver = true;
-      disableGame();
+      disableGame('Win');
     }
   }
 
@@ -237,7 +242,7 @@ $(document).ready(function () {
         }
       }
       this.gameOver = true;
-      disableGame();
+      disableGame('Lose');
     }
 
     // explores (reveals) a non-mine cell

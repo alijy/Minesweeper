@@ -33,10 +33,10 @@
 	- 99 mines (%20)
 
 ## TODO
-- fix the *Play Again?* button
+- ~~fix the *Play Again?* button~~
 - ~~fix the flagged cells issue~~
 - ~~implement the mine count down~~
-- implement the timer
+- ~~implement the timer~~
 - implement **rule 7** above
 - add explosion animation
 - replace numbers with pictures
