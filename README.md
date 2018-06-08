@@ -5,11 +5,14 @@ Minesweeper is a single-player puzzle game. The objective of the game is to clea
 ## How to Play
 You can play Minesweeper in three different modes. These modes represent different difficulty levels of the game. The modes are:
 
-- __Beginner__: A simple 9 X 9 grid containing 10 hidden mines which cover about **12%** of the grid.
+- __Beginner Mode__: A simple 9 X 9 grid containing 10 hidden mines which cover about **12%** of the grid.
+![beginner](images/beginner-screenshot.png)
 
-- __Intermediate__: A more challenging 16 X 16 grid containing 40 hidden mines which covers about **16%** of the grid.
+- __Intermediate Mode__: A more challenging 16 X 16 grid containing 40 hidden mines which covers about **16%** of the grid.
+![intermediate](images/intermediate-screenshot.png)
 
-- __Expert__: The most challenging mode which is a grid of size 16 X 30 with 99 mines that makes about **20%** of the grid.
+- __Expert Mode__: The most challenging mode which is a grid of size 16 X 30 with 99 mines that makes about **20%** of the grid.
+![expert](images/expert-screenshot.png)
 
 Each cell of the grid is of one of the 3 different types:
 
