@@ -67,7 +67,6 @@ $(document).ready(function () {
       if (seconds < 10) { seconds = "0"+seconds}
       if (minutes < 10) { minutes = "0"+minutes}
       $('#timer').text(hours + ":" + minutes + ":" + seconds);
-      console.log(hours + ":" + minutes + ":" + seconds);
     }, 1000);
   }
 
